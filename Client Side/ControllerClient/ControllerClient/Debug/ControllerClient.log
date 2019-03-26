@@ -1,0 +1,6 @@
+﻿  client.cpp
+d:\microsoft visual studio\2017\enterprise\client\controllerclient\controllerclient\client.cpp(202): warning C4477: 'printf' : format string '%S' requires an argument of type 'wchar_t *', but variadic argument 1 has type 'std::string'
+d:\microsoft visual studio\2017\enterprise\client\controllerclient\controllerclient\client.cpp(212): warning C4477: 'printf' : format string '%c' requires an argument of type 'int', but variadic argument 1 has type 'char *'
+  testMain.cpp
+  Generating Code...
+  ControllerClient.vcxproj -> D:\Microsoft Visual Studio\2017\Enterprise\Client\ControllerClient\Debug\ControllerClient.exe
