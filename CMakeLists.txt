@@ -13,13 +13,25 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
+#set the object definition
+#set(OBJS
+#	${CMAKE_CURRENT_DIR}/lib/server.o
+#)
+
+#SET_SOURCE_FILES_PROPERITIES(
+# ${OBJS}
+# PROPERTIES
+# EXTERNAL_OBJECT true
+# GENERATED true
+#)
+
 find_package (Threads REQUIRED)
 find_package(SDL2 REQUIRED)
 
 # The following folder will be included
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
-add_executable(RobotMain ${PROJECT_SOURCE_DIR}/RobotMain.cpp)
+add_executable(RobotMain ${PROJECT_SOURCE_DIR}/lib/server.o ${PROJECT_SOURCE_DIR}/RobotMain.cpp)
 if (${CMAKE_LIBRARY_ARCHITECTURE} STREQUAL "arm-linux-gnueabihf") # Jetson TK1 / Pi
     target_link_libraries(RobotMain ${CMAKE_SOURCE_DIR}/lib/raspberry/libCTRE_Phoenix.a)
     target_link_libraries(RobotMain ${CMAKE_SOURCE_DIR}/lib/raspberry/libCTRE_PhoenixCCI.a)

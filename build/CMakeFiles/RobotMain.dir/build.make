@@ -86,9 +86,11 @@ RobotMain_OBJECTS = \
 "CMakeFiles/RobotMain.dir/RobotMain.cpp.o"
 
 # External object files for target RobotMain
-RobotMain_EXTERNAL_OBJECTS =
+RobotMain_EXTERNAL_OBJECTS = \
+"/home/nvidia/Phoenix-Linux-SocketCAN-Example/lib/server.o"
 
 ../bin/RobotMain: CMakeFiles/RobotMain.dir/RobotMain.cpp.o
+../bin/RobotMain: ../lib/server.o
 ../bin/RobotMain: CMakeFiles/RobotMain.dir/build.make
 ../bin/RobotMain: ../lib/x86-64/libCTRE_Phoenix.a
 ../bin/RobotMain: ../lib/x86-64/libCTRE_PhoenixCCI.a
