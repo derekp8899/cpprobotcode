@@ -9,6 +9,9 @@
 #include <SDL2/SDL.h>
 #include <unistd.h>
 #include "server.h"
+#include <stdio.h>
+
+#define MAX .3
 
 using namespace ctre::phoenix;
 using namespace ctre::phoenix::platform;
@@ -58,40 +61,34 @@ int main() {
   for(int i = 0; i < 14; i++){//init to zero
     contIn[i] = 0;
   }
-  //test the scanf from buffer;
-  sprintf(buffer,"1 1 1 1 1 1 1 1 1 1 1 1 1 1");
-  cout << buffer << endl;
-  sscanf(buffer,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f", &contIn[0], &contIn[1], &contIn[2], &contIn[3], &contIn[4], &contIn[5], &contIn[6], &contIn[7], &contIn[8], &contIn[9], &contIn[10], &contIn[11], &contIn[12], &contIn[13]);
-  //scanf();
-  cout << contIn[0] << contIn[1] << contIn[2] << contIn[3] << contIn[4] << contIn[5] << contIn[6] << contIn[7] << contIn[8] << contIn[9] << contIn[10] << contIn[11] << contIn[12] << contIn[13] << endl;
-     //this is the test bed for the socket connection
+
   connect(&sockfd, &newsockfd);
   clientConnect(&sockfd, &newsockfd);
-  num = recieve(sockfd, newsockfd, buffer);
-  if(!num)
-    cout<< "recieved something" << num <<endl;
-    sscanf(buffer,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f", &contIn[0], &contIn[1], &contIn[2], &contIn[3], &contIn[4], &contIn[5], &contIn[6], &contIn[7], &contIn[8], &contIn[9], &contIn[10], &contIn[11], &contIn[12], &contIn[13]);
-    cout << contIn[1] << endl;
-
   
   //zero out the drive signals
   drive(0,0);
+  sleep(5);//wait for all inits to finish
+  printf("Current control values\n");
   while(true){//loop for on/off 1 second
     ctre::phoenix::unmanaged::FeedEnable(100);
-    x++;
-    if((x%1000)==0){
-      drive(.2,0);
-      for(int x = 0; x < 1000; x++){
-	ctre::phoenix::unmanaged::FeedEnable(100);
-	drive(.2,0);
-	sleepApp(1);
-      }
-      x = 0;
+    if(!(num = recieve(sockfd, newsockfd, buffer))){
+      sscanf(buffer,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f", &contIn[0], &contIn[1], &contIn[2], &contIn[3], &contIn[4], &contIn[5], &contIn[6], &contIn[7], &contIn[8], &contIn[9], &contIn[10], &contIn[11], &contIn[12], &contIn[13]);
+      printf("\rY: %f, X: %f",contIn[1],contIn[0]);
+      
+      if(contIn[1] > MAX)
+      	drive(MAX,0);
+      else if(contIn[1] < -MAX)
+	drive(-MAX,0);
+      else
+	drive(contIn[1],0);
+      send(newsockfd,1);
     }
     else{
+      cout << "Disconnected from station attempting reconnect" << endl;
+      connect(&sockfd, &newsockfd);
+      clientConnect(&sockfd, &newsockfd);
       drive(0,0);
     }
-    sleepApp(1);
   }     	
   return 0;
 }
