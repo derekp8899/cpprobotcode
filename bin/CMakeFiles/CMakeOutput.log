@@ -1,14 +1,14 @@
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /home/nvidia/Phoenix-Linux-SocketCAN-Example/bin/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_4efac/fast"
-/usr/bin/make -f CMakeFiles/cmTC_4efac.dir/build.make CMakeFiles/cmTC_4efac.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_680d4/fast"
+/usr/bin/make -f CMakeFiles/cmTC_680d4.dir/build.make CMakeFiles/cmTC_680d4.dir/build
 make[1]: Entering directory '/home/nvidia/Phoenix-Linux-SocketCAN-Example/bin/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_4efac.dir/CheckIncludeFile.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_4efac.dir/CheckIncludeFile.c.o   -c /home/nvidia/Phoenix-Linux-SocketCAN-Example/bin/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_4efac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4efac.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_4efac.dir/CheckIncludeFile.c.o  -o cmTC_4efac -rdynamic 
+Building C object CMakeFiles/cmTC_680d4.dir/CheckIncludeFile.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_680d4.dir/CheckIncludeFile.c.o   -c /home/nvidia/Phoenix-Linux-SocketCAN-Example/bin/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_680d4
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_680d4.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_680d4.dir/CheckIncludeFile.c.o  -o cmTC_680d4 -rdynamic 
 make[1]: Leaving directory '/home/nvidia/Phoenix-Linux-SocketCAN-Example/bin/CMakeFiles/CMakeTmp'
 
 

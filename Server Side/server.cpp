@@ -54,7 +54,7 @@ int send(int newsockfd, float distance){
     int n= 0;
     char buffer[256];
     sprintf(buffer, "%f", (distance));
-	n = write(newsockfd, buffer ,255);
+	n = write(newsockfd, buffer,255);
 	if (n < 0) {
 		printf("ERROR writing to socket\n");
 		return 1;

@@ -61,13 +61,21 @@ int main() {
   for(int i = 0; i < 14; i++){//init to zero
     contIn[i] = 0;
   }
-
+  string retBuf;
+  char* rBuf = (char*)malloc(255);
   connect(&sockfd, &newsockfd);
   clientConnect(&sockfd, &newsockfd);
   
   //zero out the drive signals
   drive(0,0);
   sleep(5);//wait for all inits to finish
+  printf("attempt recv\n");
+  fflush(stdout);
+  //  sleep(1);
+  num = recieve(sockfd, newsockfd,buffer);
+  //  sleep(1);
+  printf("testing recv: %s\n",buffer);
+  send(newsockfd,10);
   printf("Current control values\n");
   while(true){//loop for on/off 1 second
     ctre::phoenix::unmanaged::FeedEnable(100);
@@ -81,12 +89,31 @@ int main() {
 	drive(-MAX,0);
       else
 	drive(contIn[1],0);
-      send(newsockfd,1);
+      /*    
+      retBuf.append("1");
+      retBuf.append(" ");
+      retBuf.append("1");
+      retBuf.append(" ");
+
+      retBuf.append("1");
+      retBuf.append(" ");
+
+
+      retBuf.append("1");
+      retBuf.append(" ");
+      retBuf.append("10");
+      rBuf = retBuf.c_str();
+      */
+      //      free(rBuf);
+      //      rBuf = malloc(255);
+      sprintf(rBuf,"%f %f %f %f %f",contIn[1],contIn[1],contIn[1],contIn[1],10.0);
+      send(newsockfd,10);
+      retBuf="";
     }
     else{
-      cout << "Disconnected from station attempting reconnect" << endl;
-      connect(&sockfd, &newsockfd);
-      clientConnect(&sockfd, &newsockfd);
+      cout <<"exiting"<<endl;// "Disconnected from station attempting reconnect" << endl;
+      // connect(&sockfd, &newsockfd);
+      //clientConnect(&sockfd, &newsockfd);
       drive(0,0);
     }
   }     	
