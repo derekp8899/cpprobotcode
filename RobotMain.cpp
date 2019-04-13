@@ -12,8 +12,9 @@
 #include <stdio.h>
 #include <ctime>
 
-#define MAX .3
+#define MAX .3 //our max value for the drive system
 
+//the common namespaces for the program
 using namespace ctre::phoenix;
 using namespace ctre::phoenix::platform;
 using namespace ctre::phoenix::motorcontrol;
@@ -26,6 +27,7 @@ TalonSRX talRF(2);
 TalonSRX talLR(3);
 TalonSRX talRR(4);
 
+//function to do the driving
 void drive(double fwd, double turn)
 {
 	double left = fwd - turn;
@@ -52,11 +54,16 @@ int main() {
   //std::cin >> interface;
   interface = "can0";
   ctre::phoenix::platform::can::SetCANInterface(interface.c_str());
+
   int x = 0;
-  //init the server stuff
+
+  
+  //for the ramp clock
   double rampTime = 0;
   double speedMult = .1;
   double maxTime = 1.2;
+
+  //for the server connections
   int sockfd, newsockfd, num = 1, num2 = 0;
   float distance = 10.0;
   char buffer[256];
@@ -72,49 +79,57 @@ int main() {
   //zero out the drive signals
   drive(0,0);
   sleep(5);//wait for all inits to finish
+
+  //test the connection with a single recv and send
   printf("attempt recv\n");
   fflush(stdout);
-  //  sleep(1);
   num = recieve(sockfd, newsockfd, buffer);
-  //  sleep(1);
   printf("testing recv: %s\n",buffer);
   fflush(stdout);
   sprintf(rBuf,"%f %f %f %f %f",10.0,10.0,10.0,10.0,10.0);
   send(newsockfd,rBuf);
+
+  //print out the current control values
   printf("Current control values\n");
+
+  //for more stuff for the ramping
   clock_t clockT = clock();
   float leftSpd;
   float rightSpd;
-  while(true){//loop for on/off 1 second
-    ctre::phoenix::unmanaged::FeedEnable(100);
+  
+  while(true){//the main control loop
+    ctre::phoenix::unmanaged::FeedEnable(100);//enable the drive functions of the talons
+    //if we can still recieve new control values
     if(!(num = recieve(sockfd, newsockfd, buffer))){
-      sscanf(buffer,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f", &contIn[0], &contIn[1], &contIn[2], &contIn[3], &contIn[4], &contIn[5], &contIn[6], &contIn[7], &contIn[8], &contIn[9], &contIn[10], &contIn[11], &contIn[12], &contIn[13]);
-      printf("\rY: %f, X: %f",contIn[1],contIn[0]);
-      rampTime = (clock()-clockT)/CLOCKS_PER_SEC;
-      if(contIn[1] > .05 || contIn[1] < -.05 ){
-	if(rampTime >= maxTime){
+      sscanf(buffer,"%f %f %f %f %f %f %f %f %f %f %f %f %f %f", &contIn[0], &contIn[1], &contIn[2], &contIn[3], &contIn[4], &contIn[5], &contIn[6], &contIn[7], &contIn[8], &contIn[9], &contIn[10], &contIn[11], &contIn[12], &contIn[13]);//parse the input string
+      printf("\rY: %f, X: %f",contIn[1],contIn[0]);//print the recieved values
+      rampTime = (clock()-clockT)/CLOCKS_PER_SEC;//start the ramptimer
+      /* this is the logic for the ramp timer  */
+      if(contIn[1] > .05 || contIn[1] < -.05 ){//if we have control values out of the 'deadzone'
+	if(rampTime >= maxTime){//we we are over the max ramp time
 	  contIn[1]=contIn[1]*MAX;
-	  contIn[0]=contIn[0]*MAX;
-	  drive(contIn[1],contIn[0]);
+	  contIn[0]=contIn[0]*MAX;//set control values to max
+	  drive(contIn[1],contIn[0]);//init the drive
 	  leftSpd=contIn[1]-contIn[0];
-	  rightSpd=contIn[1]+contIn[0];
+	  rightSpd=contIn[1]+contIn[0];//set the return values for the ui
 	}
-	else{
+	else{//else we are still ramping up the speed
 	  contIn[1]=contIn[1]*speedMult;
-	  contIn[0]=contIn[0]*speedMult;
-	  drive(contIn[1],contIn[0]);
+	  contIn[0]=contIn[0]*speedMult;//set the control values based on surrent speed multiplier
+	  drive(contIn[1],contIn[0]);//init the drive
 	  leftSpd=contIn[1]-contIn[0];
-	  rightSpd=contIn[1]+contIn[0];
-	  speedMult=.1+(.16* (clock()-clockT)/(double)CLOCKS_PER_SEC);
+	  rightSpd=contIn[1]+contIn[0];//set the return values for the ui
+	  speedMult=.1+(.16* (clock()-clockT)/(double)CLOCKS_PER_SEC);//update the speed multiplier
 	}
       }
-      else{
+      else{//else we set all the stuff to zero
 	rampTime = 0;
 	clockT = clock();
 	drive(0,0);
 	leftSpd=0;
 	rightSpd=0;
       }
+      /* THIS IS THE OUT DATED DRIVE FUNCTIONS */
       /*
       if(contIn[1] > MAX)
       	drive(MAX,0);
@@ -123,14 +138,14 @@ int main() {
       else
 	drive(contIn[1],0);
       */
+
+      // generate the return string for the ui and send
       sprintf(rBuf,"%f %f %f %f %f",leftSpd,-rightSpd,leftSpd,-rightSpd,10.0);
       send(newsockfd,rBuf);
       retBuf="";
     }
-    else{
+    else{//set the drive to zero and exit the program if we lose the connection
       cout <<"exiting"<<endl;// "Disconnected from station attempting reconnect" << endl;
-      // connect(&sockfd, &newsockfd);
-      //clientConnect(&sockfd, &newsockfd);
       drive(0,0);
     }
   }     	
