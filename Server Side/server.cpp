@@ -50,11 +50,11 @@ int recieve(int sockfd, int newsockfd, char* buffer){
         strcpy(buffer, buffer2);
 	return 0;	
 }
-int send(int newsockfd, float distance){
+int send(int newsockfd, char* message){
     int n= 0;
-    char buffer[256];
-    sprintf(buffer, "%f", (distance));
-	n = write(newsockfd, buffer,255);
+    //    char buffer[256];
+    //    sprintf(buffer, "%f %f", message[0]);
+	n = write(newsockfd, message,255);
 	if (n < 0) {
 		printf("ERROR writing to socket\n");
 		return 1;

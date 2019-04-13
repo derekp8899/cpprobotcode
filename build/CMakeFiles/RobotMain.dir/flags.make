@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=c++11 -pthread
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/nvidia/Phoenix-Linux-SocketCAN-Example/include 
+CXX_INCLUDES = -I/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/include 
 

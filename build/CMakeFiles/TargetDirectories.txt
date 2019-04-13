@@ -1,3 +1,3 @@
-/home/nvidia/Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/edit_cache.dir
-/home/nvidia/Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/rebuild_cache.dir
-/home/nvidia/Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/RobotMain.dir
+/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/edit_cache.dir
+/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/rebuild_cache.dir
+/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/RobotMain.dir

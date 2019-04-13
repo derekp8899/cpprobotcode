@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/nvidia/Phoenix-Linux-SocketCAN-Example/RobotMain.cpp" "/home/nvidia/Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/RobotMain.dir/RobotMain.cpp.o"
+  "/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/RobotMain.cpp" "/home/nvidia/ui-Phoenix-Linux-SocketCAN-Example/build/CMakeFiles/RobotMain.dir/RobotMain.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

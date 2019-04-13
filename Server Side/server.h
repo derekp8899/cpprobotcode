@@ -20,7 +20,7 @@ void error(const char*);
 void connect(int* , int*);
 void clientConnect(int*, int*);
 int recieve(int, int, char*);
-int send(int, float);
+int send(int, char*);
 int closeSocket(int*);
 
 #endif
