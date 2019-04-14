@@ -75,6 +75,10 @@ int main() {
   char* rBuf = (char*)malloc(255);
   connect(&sockfd, &newsockfd);
   clientConnect(&sockfd, &newsockfd);
+
+  //container for storing the distance measure and sensor value
+  float distRet;
+  int sensorFlag;
   
   //zero out the drive signals
   drive(0,0);
@@ -92,10 +96,12 @@ int main() {
   //print out the current control values
   printf("Current control values\n");
 
-  //for more stuff for the ramping
+  //for more stuff for the ramping and for holding values for mining status
   clock_t clockT = clock();
   float leftSpd;
   float rightSpd;
+  int extend=0;
+  int mineOn=0;
   
   while(true){//the main control loop
     ctre::phoenix::unmanaged::FeedEnable(100);//enable the drive functions of the talons
@@ -129,6 +135,7 @@ int main() {
 	leftSpd=0;
 	rightSpd=0;
       }
+      /*--------------------------------------------------------*/
       /* THIS IS THE OUT DATED DRIVE FUNCTIONS */
       /*
       if(contIn[1] > MAX)
@@ -138,14 +145,15 @@ int main() {
       else
 	drive(contIn[1],0);
       */
+      /*------------------------------------------------------*/
 
-      // generate the return string for the ui and send
-      sprintf(rBuf,"%f %f %f %f %f",leftSpd,-rightSpd,leftSpd,-rightSpd,10.0);
+      // generate the return string to the client for the ui and send
+      sprintf(rBuf,"%f %f %f %f %f",leftSpd,-rightSpd,leftSpd,-rightSpd,10.0);//switch to using dist with cam on, known value of ten for now also add in the miner flags
       send(newsockfd,rBuf);
       retBuf="";
     }
     else{//set the drive to zero and exit the program if we lose the connection
-      cout <<"exiting"<<endl;// "Disconnected from station attempting reconnect" << endl;
+      cout <<"exiting"<<endl;// "Disconnected from station attempting reconnect" << endl; //add the second string back in if reconnect is finished
       drive(0,0);
     }
   }     	
