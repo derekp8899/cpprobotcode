@@ -11,7 +11,7 @@ For use on Jetson tx2 running ubuntu and CTRE TALONSRX motor controllers
 | libCTRE_PhoenixCCI.a | Phoenix Common C Interface, leave this be. |
 | libCTRE_Phoenix.a | Class library, this is built from Phoenix-frc-lib. |
 
-For the latest version of binaries, see our maven repository here:  
+For the latest version of binaries, see the CTRE maven repository here:  
 http://devsite.ctr-electronics.com/maven/release/com/ctre/phoenix/
 
 #### CAN USB Adapter
